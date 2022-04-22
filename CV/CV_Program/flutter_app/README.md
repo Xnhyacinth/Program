@@ -40,9 +40,11 @@
 ### flutter 前端
 2.1 弹幕调度动画组
    弹幕调度系统各端实现都大同小异，只是动画库的API方式区别。flutter里使用SlideTransition可以实现单条弹幕文字的动画效果
+
 2.2 裁剪蒙版容器
    正式环境肯定是从网络http长连接或者socket获取实时数据，由于我们是离线演示DEMO，方便起见需要在初始化时加载刚才后端产出蒙版路径res.json打包到APP中
    flutter实现蒙版效果的核心就在于CustomClipper类，它允许我们通过Path对象来自定义坐标绘制一个裁剪路径（类似于canvas绘图），我们创建一个MaskPath，并在里面绘制我们刚才加载的配置文件的那一帧，然后通过ClipPath包裹弹幕外层容器
+
 2.3 视频流蒙版同步
    考虑到IOS和Android插件的稳定性，用flutter官方提供的播放器插件video_player
    在video初始化后，通过addListener开始监听播放进度。当播放进度改变时候，获取当前的进度毫秒，去寻找与当前进度最接近的配置文件中的数据集stepsTime，这个配置的蒙版就是当前播放画面帧的裁剪蒙版，此时立刻通过eventBus.fire通知蒙版容器用key为stepsTime的数组路径进行重绘。校准蒙版
