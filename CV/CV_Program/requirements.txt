@@ -1,0 +1,6 @@
+pixellib==0.7.1
+tensorflow==2.2.0
+opencv-python==4.5.5.62
+imgaug==0.4.0
+
+
