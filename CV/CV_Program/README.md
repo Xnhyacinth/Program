@@ -17,7 +17,7 @@
 * opencv 
 * pixellib
 
-安装依赖：pip install -r requirements.txt
+安装依赖：pip install -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple
 
 ## 二、用法：
 
