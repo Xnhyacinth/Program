@@ -36,6 +36,8 @@ optional arguments:
 * 2.1.1 下载字体 `MSYH.ttc` 至 `./fonts`目录下，[下载地址点这里](https://github.com/Xnhyacinth/xnhyacinth/releases/tag/Fonts)
 * 2.1.2 下载预训练模型 `mask_rcnn_coco.h5`和`deeplabv3_xception_tf_dim_ordering_tf_kernels.h5`至`./weights`目录下，[deeplabv3下载点这里](https://download.csdn.net/download/ixuyn/85194774?spm=1001.2014.3001.5503)  [mask_rcnn下载点这里](https://download.csdn.net/download/ixuyn/85194933)
 * 2.1.3 下载演示视频`1.demo.mp4`至`./videos`目录下，[下载地址点这里](https://github.com/Xnhyacinth/xnhyacinth/releases/tag/Media)
+* 2.1.4 目录结构
+* ![1650609953_1_.png](https://s2.loli.net/2022/04/22/fed2vDXFol6VckJ.png)
 
 ### 2.2、生成蒙版文件
 
