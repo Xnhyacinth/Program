@@ -1,2 +1,2 @@
 # Program
-Some projects and works in subjects
+Some projects and works
