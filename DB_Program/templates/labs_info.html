@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+
+{% block page_content %}
+    <div class="row">
+        <div>
+            <h2>实验室信息 </h2>
+        </div>
+        <div class="col-lg-6">
+            <a class="btn btn-info" href="#" data-toggle="modal" data-target="#myModal1">添加实验室</a>
+        </div>
+    </div>
+    <script>
+        function set_lab_id(lab_id) {
+            document.getElementById("lab_id_label").innerHTML = lab_id;
+        }
+
+        function submit_click(lab_id) {
+            let new_name = document.getElementById("new_name_input").value;
+            if (new_name.length === 0) {
+                alert("实验室名不能为空！");
+                return null;
+            }
+            window.location.href = "/lab_info/modify/" + lab_id + "/" + new_name;
+        }
+    </script>
+    <!--列表-->
+    {% if labs %}
+        <table class="table table-striped table-condensed">
+            <thead>
+            <tr>
+                <th>序号</th>
+                <th>实验室编号</th>
+                <th>实验室名</th>
+                <th>设备数</th>
+                <th></th>
+
+            </tr>
+            </thead>
+            {% for lab in labs %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ lab.id }}</td>
+                    <td>{{ lab.name }}</td>
+                    <td>{{ lab.device_num }}</td>
+
+                    <td>
+                        <a class="btn btn-info btn-sm {% if current_user.role.name != "admin" %} disabled {% endif %}"
+                           href="#" data-toggle="modal" data-target="#myModal2"
+                           onclick="set_lab_id({{ lab.id }})">修改</a>
+                        <a class="btn btn-danger btn-sm {% if current_user.role.name != "admin" %} disabled {% endif %}"
+                           href="{{ url_for("lab_info_delete", id=lab.id) }}"
+                           onclick="return confirm('确认要删除该实验室信息吗？');">删除</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        <div>共&nbsp;{{ labs_num }}&nbsp;条记录 <br></div>
+    {% else %}
+        <p>看来没有符合条件的记录</p>
+    {% endif %}
+
+
+    <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="width: 500px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel2">创建实验室信息</h4>
+                </div>
+                <div class="modal-body">
+                    {{ wtf.quick_form(add_info_form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="width: 500px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel2">修改实验室信息</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form1 form2">
+                        <ul class="row">
+                            <div class="col-xs-15">
+                                <div>修改ID为"<label id="lab_id_label">xxx</label>"的实验室名：</div>
+                                <input id="new_name_input" type="text" class="form-control">
+                            </div>
+                        </ul>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary"
+                            onclick="submit_click(document.getElementById('lab_id_label').innerHTML)">提交
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

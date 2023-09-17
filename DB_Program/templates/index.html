@@ -1,0 +1,562 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+
+{% block page_content %}
+    <script type="text/javascript" src="../static/echarts.min.js"></script>
+    <div class="row">
+        <div><h3>现有设备数</h3></div>
+        <div id="chart1" style="width:80%; height:300px;"></div>
+
+        {#        <div>#}
+        {#            <ul>#}
+        {#                <li>#}
+        {#                    实验室名&nbsp;&nbsp;设备数量#}
+        {#                </li>#}
+        {#                {% for room in rooms %}#}
+        {#                    <li>#}
+        {#                        {{ room.name }}&nbsp;&nbsp;{{ room.device_num }}#}
+        {#                    </li>#}
+        {#                {% endfor %}#}
+        {#            </ul>#}
+        {#        </div>#}
+        <hr>
+
+        <div>
+            <div><h3>设备运行情况</h3></div>
+            <div id="chart2" style="width:50%; height:300px;"></div>
+        </div>
+        <hr>
+
+        <div>
+            <div><h3>保修、报废情况</h3></div>
+            <div id="chart3" style="width:80%; height:300px;"></div>
+        </div>
+        <hr>
+{#        <div>#}
+{#            <div>已保修设备数量</div>#}
+{#            <div id="chart3" style="width:50%; height:300px;"></div>#}
+{#        </div>#}
+{#        <hr>#}
+
+        {#        <div>#}
+        {#            <div>已报废设备数量</div>#}
+        {#            <div id="chart4" style="width:50%; height:300px;"></div>#}
+        {#        </div>#}
+        {#        <hr>#}
+
+
+    </div>
+
+
+
+    <script>
+        echart_line_room();
+        chart_pie();
+        echart_line_com();
+
+        function echart_line_room() {
+            let bar_color = '#205acf';
+            var myChart = echarts.init(document.getElementById('chart1'));
+
+            option = {
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                legend: {
+                    data: ["设备数"],
+                    align: 'right',
+                    right: '40%',
+                    top: '0%',
+                    textStyle: {
+                        {#color: "#fff",#}
+                        fontSize: '16',
+                    },
+                    itemWidth: 16,
+                    itemHeight: 16,
+                    itemGap: 35
+                },
+                grid: {
+                    left: '0%',
+                    top: '40px',
+                    right: '0%',
+                    bottom: '2%',
+                    containLabel: true
+                },
+                xAxis: [{
+                    type: 'category',
+                    data: {{ chart_data["lab_name"] |safe}},
+                    axisLine: {
+                        show: true,
+                        lineStyle: {
+                            {#color: "rgba(255,255,255,.1)",#}
+                            width: 1,
+                            type: "solid"
+                        },
+                    },
+                    axisTick: {
+                        show: false,
+                    },
+                    axisLabel: {
+                        interval: 0,
+                        rotate: 45,
+                        show: true,
+                        splitNumber: 15,
+                        textStyle: {
+                            {#color: "rgba(255,255,255,.6)",#}
+                            fontSize: '16',
+                        },
+                    },
+                }],
+                yAxis: [{
+                    type: 'value',
+                    minInterval: 1,
+                    axisLabel: {
+                        show: true,
+                        textStyle: {
+                            {#color: "rgba(255,255,255,.6)",#}
+                            fontSize: '16',
+                        },
+                    },
+                    axisTick: {
+                        show: false,
+                    },
+                    axisLine: {
+                        show: true,
+                        lineStyle: {
+                            {#color: "rgba(255,255,255,.1	)",#}
+                            width: 1,
+                            type: "solid"
+                        },
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            {#color: "rgba(255,255,255,.1)",#}
+                        }
+                    }
+                }],
+                series: [
+                    {
+                        name: "设备数",
+                        type: 'bar',
+                        data: {{ chart_data["dev_num"] |safe}},
+                        barWidth: '30', //柱子宽度
+                        // barGap: 1, //柱子之间间距
+                        itemStyle: {
+                            normal: {
+                                color: bar_color,
+                                opacity: 1,
+                                barBorderRadius: 5,
+                            }
+                        }
+                    },
+                ]
+            };
+
+            myChart.setOption(option);
+            window.addEventListener("resize", function () {
+                myChart.resize();
+            });
+        }
+
+        function chart_pie() {
+            {#let colors = ['#62c98d', '#205acf', '#c9c862', '#c98b62', '#c962b9', '#7562c9', '#c96262'];#}
+            let colors = ['#CC3333', '#205acf', '#62c98d', '#c98b62', '#c962b9', '#7562c9', '#c96262'];
+            var myChart = echarts.init(document.getElementById('chart2'));
+
+            option = {
+                tooltip: {
+                    trigger: 'item',
+                    formatter: "{b}: {c} ({d}%)",
+                },
+                legend: {
+                    right: 10,
+                    top: 30,
+                    height: 140,
+                    itemWidth: 10,
+                    itemHeight: 10,
+                    itemGap: 10,
+                    textStyle: {
+                        {#color: 'rgba(255,255,255,.6)',#}
+                        fontSize: 15,
+                    },
+                    orient: 'vertical',
+                },
+                calculable: true,
+                series: [
+                    {
+                        {#name: ' ',#}
+                        color: colors,
+                        type: 'pie',
+                        radius: [30, 70],
+                        {#center: ['35%', '50%'],#}
+                        {#roseType: 'radius',#}
+                        label: {
+                            normal: {
+                                show: true
+                            },
+                            emphasis: {
+                                show: true
+                            }
+                        },
+                        lableLine: {
+                            normal: {
+                                show: true
+                            },
+                            emphasis: {
+                                show: true
+                            }
+                        },
+
+                        data: {{ chart_data["pie_data"] | safe }},
+                    },
+                ]
+            };
+
+            myChart.setOption(option);
+            window.addEventListener("resize", function () {
+                myChart.resize();
+            });
+        }
+
+
+        function echart_line_com() {
+            var myChart = echarts.init(document.getElementById('chart3'));
+
+            option = {
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                legend: {
+                    data: ["保修", "报废"],
+                    align: 'right',
+                    right: '40%',
+                    top: '0%',
+                    textStyle: {
+                        {#color: "#fff",#}
+                        fontSize: '16',
+                    },
+                    itemWidth: 16,
+                    itemHeight: 16,
+                    itemGap: 35
+                },
+                grid: {
+                    left: '0%',
+                    top: '40px',
+                    right: '0%',
+                    bottom: '2%',
+                    containLabel: true
+                },
+                xAxis: [{
+                    type: 'category',
+                    data: {{ chart_data["device_name"] |safe}},
+                    axisLine: {
+                        show: true,
+                        lineStyle: {
+                            {#color: "rgba(255,255,255,.1)",#}
+                            width: 1,
+                            type: "solid"
+                        },
+                    },
+                    axisTick: {
+                        show: false,
+                    },
+                    axisLabel: {
+                        interval: 0,
+                        rotate: 30,
+                        show: true,
+                        splitNumber: 15,
+                        textStyle: {
+                            {#color: "rgba(255,255,255,.6)",#}
+                            fontSize: '12',
+                        },
+                    },
+                }],
+                yAxis: [{
+                    type: 'value',
+                    minInterval: 1,
+                    axisLabel: {
+                        show: true,
+                        textStyle: {
+                            {#color: "rgba(255,255,255,.6)",#}
+                            fontSize: '16',
+                        },
+                    },
+                    axisTick: {
+                        show: false,
+                    },
+                    axisLine: {
+                        show: true,
+                        lineStyle: {
+                            {#color: "rgba(255,255,255,.1	)",#}
+                            width: 1,
+                            type: "solid"
+                        },
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            {#color: "rgba(255,255,255,.1)",#}
+                        }
+                    }
+                }],
+                series: [
+                    {
+                        name: "保修",
+                        type: 'bar',
+                        data: {{ chart_data["warranty_device_num"] |safe}},
+                        barWidth: '30', //柱子宽度
+                        // barGap: 1, //柱子之间间距
+                        itemStyle: {
+                            normal: {
+                                color: '#205acf',
+                                opacity: 1,
+                                barBorderRadius: 5,
+                            }
+                        }
+                    },
+                    {
+                        name: "报废",
+                        type: 'bar',
+                        data: {{ chart_data["scrap_device_num"] |safe}},
+                        barWidth: '30', //柱子宽度
+                        // barGap: 1, //柱子之间间距
+                        itemStyle: {
+                            normal: {
+                                color: '#7562c9',
+                                opacity: 1,
+                                barBorderRadius: 5,
+                            }
+                        }
+                    },
+                ]
+            };
+
+            myChart.setOption(option);
+            window.addEventListener("resize", function () {
+                myChart.resize();
+            });
+        }
+
+        function echart_line_warranty() {
+            let bar_color = '#2f89cf';
+            var myChart = echarts.init(document.getElementById('chart3'));
+
+            option = {
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                legend: {
+                    data: ["设备数"],
+                    align: 'right',
+                    right: '40%',
+                    top: '0%',
+                    textStyle: {
+                        {#color: "#fff",#}
+                        fontSize: '16',
+                    },
+                    itemWidth: 16,
+                    itemHeight: 16,
+                    itemGap: 35
+                },
+                grid: {
+                    left: '0%',
+                    top: '40px',
+                    right: '0%',
+                    bottom: '2%',
+                    containLabel: true
+                },
+                xAxis: [{
+                    type: 'category',
+                    data: {{ chart_data["device_name"] |safe}},
+                    axisLine: {
+                        show: true,
+                        lineStyle: {
+                            {#color: "rgba(255,255,255,.1)",#}
+                            width: 1,
+                            type: "solid"
+                        },
+                    },
+                    axisTick: {
+                        show: false,
+                    },
+                    axisLabel: {
+                        interval: 0,
+                        rotate: 45,
+                        show: true,
+                        splitNumber: 15,
+                        textStyle: {
+                            {#color: "rgba(255,255,255,.6)",#}
+                            fontSize: '12',
+                        },
+                    },
+                }],
+                yAxis: [{
+                    type: 'value',
+                    minInterval: 1,
+                    axisLabel: {
+                        show: true,
+                        textStyle: {
+                            {#color: "rgba(255,255,255,.6)",#}
+                            fontSize: '16',
+                        },
+                    },
+                    axisTick: {
+                        show: false,
+                    },
+                    axisLine: {
+                        show: true,
+                        lineStyle: {
+                            {#color: "rgba(255,255,255,.1	)",#}
+                            width: 1,
+                            type: "solid"
+                        },
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            {#color: "rgba(255,255,255,.1)",#}
+                        }
+                    }
+                }],
+                series: [
+                    {
+                        name: "设备数",
+                        type: 'bar',
+                        data: {{ chart_data["warranty_device_num"] |safe}},
+                        barWidth: '30', //柱子宽度
+                        // barGap: 1, //柱子之间间距
+                        itemStyle: {
+                            normal: {
+                                color: bar_color,
+                                opacity: 1,
+                                barBorderRadius: 5,
+                            }
+                        }
+                    }
+                ]
+            };
+
+            myChart.setOption(option);
+            window.addEventListener("resize", function () {
+                myChart.resize();
+            });
+        }
+
+        function echart_line_scrap() {
+            let bar_color = '#2f89cf';
+            var myChart = echarts.init(document.getElementById('chart4'));
+
+            option = {
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                legend: {
+                    data: ["设备数"],
+                    align: 'right',
+                    right: '40%',
+                    top: '0%',
+                    textStyle: {
+                        {#color: "#fff",#}
+                        fontSize: '16',
+                    },
+                    itemWidth: 16,
+                    itemHeight: 16,
+                    itemGap: 35
+                },
+                grid: {
+                    left: '0%',
+                    top: '40px',
+                    right: '0%',
+                    bottom: '2%',
+                    containLabel: true
+                },
+                xAxis: [{
+                    type: 'category',
+                    data: {{ chart_data["device_name"] |safe}},
+                    axisLine: {
+                        show: true,
+                        lineStyle: {
+                            {#color: "rgba(255,255,255,.1)",#}
+                            width: 1,
+                            type: "solid"
+                        },
+                    },
+                    axisTick: {
+                        show: false,
+                    },
+                    axisLabel: {
+                        interval: 0,
+                        rotate: 45,
+                        show: true,
+                        splitNumber: 15,
+                        textStyle: {
+                            {#color: "rgba(255,255,255,.6)",#}
+                            fontSize: '12',
+                        },
+                    },
+                }],
+                yAxis: [{
+                    type: 'value',
+                    minInterval: 1,
+                    axisLabel: {
+                        show: true,
+                        textStyle: {
+                            {#color: "rgba(255,255,255,.6)",#}
+                            fontSize: '16',
+                        },
+                    },
+                    axisTick: {
+                        show: false,
+                    },
+                    axisLine: {
+                        show: true,
+                        lineStyle: {
+                            {#color: "rgba(255,255,255,.1	)",#}
+                            width: 1,
+                            type: "solid"
+                        },
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            {#color: "rgba(255,255,255,.1)",#}
+                        }
+                    }
+                }],
+                series: [
+                    {
+                        name: "设备数",
+                        type: 'bar',
+                        data: {{ chart_data["scrap_device_num"] |safe}},
+                        barWidth: '30', //柱子宽度
+                        // barGap: 1, //柱子之间间距
+                        itemStyle: {
+                            normal: {
+                                color: bar_color,
+                                opacity: 1,
+                                barBorderRadius: 5,
+                            }
+                        }
+                    },
+                ]
+            };
+
+            myChart.setOption(option);
+            window.addEventListener("resize", function () {
+                myChart.resize();
+            });
+        }
+
+    </script>
+
+{% endblock %}

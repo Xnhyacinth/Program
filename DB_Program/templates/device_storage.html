@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+
+{% block page_content %}
+    <div class="row">
+        <div>
+            <h2>新购设备入库管理 </h2>
+        </div>
+        <div class="col-lg-6">
+            <a class="btn btn-info" href="{{ url_for("add_device") }}">添加新设备</a>
+        </div>
+        <form class="form-inline" method="post" role="form">
+            {{ form.hidden_tag() }}
+            {{ wtf.form_errors(form, hiddens="True") }}
+            <div class="col-lg-6">
+                <div class="input-group">
+                    {{ form.name(class="form-control", placeholder="输入设备名进行查询") }}
+                    <span class="input-group-btn">
+	{{ wtf.form_field(form.submit) }}
+	</span>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!--用户列表-->
+    {% if devices %}
+        <table class="table table-striped table-condensed">
+            <thead>
+            <tr>
+                <th>序号</th>
+                <th>设备名</th>
+                <th>型号</th>
+                <th>类别</th>
+                <th>生产厂家</th>
+                <th>单价</th>
+                <th>购买数量</th>
+                <th>购置时间</th>
+                <th>购置人</th>
+                <th>入库批次</th>
+                <th></th>
+            </tr>
+            </thead>
+            {% for dev in devices %}
+                <tr {% if dev.user.role == admin %} class="info" {% endif %}>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ dev.name }}</td>
+                    <td>{{ dev.type }}</td>
+                    <td>{{ dev.category }}</td>
+                    <td>{{ dev.manufacturer }}</td>
+                    <td>{{ dev.price }}</td>
+                    <td>{{ dev.amount }}</td>
+                    <td>{{ dev.time }}</td>
+                    <td>{{ dev.user.username }}</td>
+                    <td>{{ dev.batch }}</td>
+                    {#                    <td>#}
+                    {#                        <a class="btn btn-danger btn-sm {% if dev.user.role != admin %} disabled {% endif %}"#}
+                    {#                           href="{{ url_for('remove_device', id=dev.id) }}" onclick="return confirm('确定要删除吗？');">删除</a>#}
+                    {#                    </td>#}
+                </tr>
+            {% endfor %}
+        </table>
+        <div>共&nbsp;{{ records_num }}&nbsp;条记录 <br></div>
+    {% else %}
+        <p>看来没有符合条件的设备</p>
+    {% endif %}
+{% endblock %}

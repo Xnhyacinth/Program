@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+
+{% block page_content %}
+    <div class="row">
+        <div>
+            <h2>个人中心 </h2>
+            <hr>
+        </div>
+        {#        <div class="col-lg-6">#}
+        {#            <a class="btn btn-info" href="#">修改用户信息</a>#}
+        {#            <hr>#}
+        {#        </div>#}
+    </div>
+    <div>
+        <div>用户ID：{{ current_user.id }}</div>
+        <br>
+        <div>用户名：{{ current_user.username }}</div>
+        <br>
+        <div>真实姓名：{{ current_user.name }}</div>
+        <br>
+        <div>邮箱：{{ current_user.email }}</div>
+        <br>
+        <div>身份：{{ current_user.role.name }}</div>
+        <br>
+        <div>
+            <a class="btn btn-info" href="#" data-toggle="modal" data-target="#myModal1">修改信息</a>
+            <a class="btn btn-danger" href="#" data-toggle="modal" data-target="#myModal2">修改密码</a>
+        </div>
+        <br>
+    </div>
+
+
+    <!-- Modal -->
+
+    <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="width: 500px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel2">创建用户信息</h4>
+                </div>
+                <div class="modal-body">
+                    {{ wtf.quick_form(modify_info_form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="width: 500px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel2">创建用户信息</h4>
+                </div>
+                <div class="modal-body">
+                    {{ wtf.quick_form(modify_password_form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+
+{% block page_content %}
+    {% if current_user.role.name == "admin" %}
+        <div class="row">
+            <div>
+                <h2>系统用户管理 </h2>
+            </div>
+            <div class="col-lg-6">
+                <a class="btn btn-info" href="#" data-toggle="modal" data-target="#myModal1">添加新用户</a>
+            </div>
+        </div>
+        <!--用户列表-->
+        {% if users %}
+            <table class="table table-striped table-condensed">
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>用户ID</th>
+                    <th>用户名</th>
+                    <th>真实姓名</th>
+                    <th>邮箱</th>
+                    <th>身份</th>
+                    <th></th>
+                </tr>
+                </thead>
+                {% for u in users %}
+                    <tr {% if u.role.name == "admin" %} class="info" {% endif %}>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ u.id }}</td>
+                        <td>{{ u.username }}</td>
+                        <td>{{ u.name }}</td>
+                        <td>{{ u.email }}</td>
+                        <td>{{ u.role.name }}</td>
+                        <td>
+                            <a class="btn btn-danger btn-sm {% if u.role.name == "admin" %} disabled {% endif %} "
+                               href="{{ url_for('delete_user', user_id=u.id) }}"
+                               onclick="return confirm('确定要删除吗？');">删除</a>
+                            <a class="btn btn-primary btn-sm {% if u.role.name == "admin" %} disabled {% endif %} "
+                               href="{{ url_for('reset_password', user_id=u.id) }}">重置密码</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+            <div>共&nbsp;{{ users_num }}&nbsp;条记录 <br></div>
+        {% else %}
+            <p>看来没有符合条件的设备</p>
+        {% endif %}
+    {% else %}
+        <div>
+
+            <br>
+            <p>您不是管理员身份，无法查看其他用户信息！</p>
+            <br>
+            <p>点击 <a href="{{ url_for('login_user_center') }}">此处</a>进入个人中心</p>
+        </div>
+
+    {% endif %}
+
+
+    <!-- Modal -->
+
+    <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="width: 500px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel2">创建用户信息</h4>
+                </div>
+                <div class="modal-body">
+                    {{ wtf.quick_form(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
