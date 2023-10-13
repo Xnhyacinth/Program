@@ -1,0 +1,3 @@
+.ant-menu-inline .ant-menu-selected:after, .ant-menu-inline .ant-menu-item-selected:after{
+    border-right: 0px solid #55b4ae;
+}
