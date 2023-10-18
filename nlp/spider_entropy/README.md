@@ -1,15 +1,19 @@
-# 爬虫获取文本，并计算文本数据的熵和验证齐夫定律
+# Spider & Entropy
 
-该repo用于计算文本数据的熵，并提供了爬虫获取文本文件和数据处理的功能。
+The repo is used to calculate the entropy of text data, and provides functions for crawlers to obtain text files and data processing.
 
-## 安装依赖
+The example data are crawled from China News Network, English wikipedia and Chinese wikipedia, and Ancient Poetry Network. A certain degree of text cleaning was performed on the Chinese and English texts respectively.
 
-在开始使用之前，确保你已经安装了以下依赖：
+And use jieba to Chinese participle, spacy to English lexical reduction, opencc traditional to simplified.
+
+## Dependencies
+
+Before getting started, make sure you have the following dependencies installed:
 
 - Python 3.x
-- 安装其他Python库（请参考`requirements.txt`文件）
+- Install other Python libraries (see the `requirements.txt` file)
 
-你可以使用以下命令安装Python库：
+You can install Python libraries using the following command:
 
 ```bash
 pip install -r requirements.txt
@@ -19,21 +23,29 @@ python -m spacy download en_core_web_sm
 ## 📁 Folder
 
 ```bash
-├── data/ # 爬取到的数据 
-├── photos/ # 图
-├── get_data_en # 爬取英文wikipedia
-├── get_data_zh # 爬取中文wikipedia
-├── get_news # 爬取中国新闻网
-├── get_gushiwen # 爬取古诗文网
-├── main # 计算熵，绘制图，验证齐夫定律
-├── process_data # 处理数据，文本清洗，分词等
+├── data/ # Crawled data
+│   ├──news_zh # Chinese news network 
+│   ├──wiki_zh # Chinese wikipedia
+│   ├──wiki_en # English wikipedia
+├── photos/ # diagrams
+├── get_data_en # Crawl English wikipedia
+├── get_data_zh # Crawl Chinese wikipedia
+├── get_news # Crawl Chinese wikipedia
+├── get_gushiwen # Crawl ancient Chinese wikipedia
+├── main # Calculating entropy, plotting graphs, verifying Ziff's law.
+├── process_data # Process data, text cleaning, split words, etc.
 ```
 
 ## 🔧 Get started
+
 ### QuickStart
-```
+
+run to calculate the entropy and draw diagrams.
+
+```bash
 python -u main.py
 ```
 
-### 爬取数据
-根据get文件自行爬取数据，爬取的数据存放在data文件夹下
+### Data
+
+Crawl the data according to the get file itself, the crawled data is stored in the data folder.
