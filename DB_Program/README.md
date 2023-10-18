@@ -1,4 +1,4 @@
-# 实验室设备管理系统
+# 实验室设备管理系统  Laboratory equipment management system
 
 数据库原理的作业课设
 
