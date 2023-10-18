@@ -1,3 +1,7 @@
+[**中文**](./README_zh.md) | [**English**](./README.md)
+
+<div id="top"></div>
+
 # Spider & Entropy
 
 The repo is used to calculate the entropy of text data, and provides functions for crawlers to obtain text files and data processing.

@@ -1,3 +1,7 @@
+[**中文**](./README_zh.md) | [**English**](./README.md)
+
+<div id="top"></div>
+
 # Spider & Entropy
 
 该repo用于计算文本数据的熵，并提供了爬虫获取文本文件和数据处理的功能。
