@@ -1,0 +1,6 @@
+opencc-python-reimplemented
+jieba
+bs4
+re
+spacy
+nltk
