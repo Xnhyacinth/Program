@@ -4,7 +4,7 @@ Some projects and works during undergraduate and postgraduate school (NCEPU & UC
 ## 📁 Folder
 
 ```bash
-├── AdvancedAI # CCF BDCI 爱奇艺「剧本角色情感识别」赛题
+├── AdvancedAI # CCF BDCI Lovecraft's "Script Character Emotion Recognition" Competition Question
 ├── AIPA # Artificial Intelligence Principles and Algorithms
 ├── CV # CV program
 ├── DB_program # DB program -- Laboratory equipment management system
