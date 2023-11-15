@@ -1,234 +1,264 @@
 import random
 import math
 import time
-queens = [[0] * 8 for _ in range(8)]  # 8x8 chessboard
-temp = [[0] * 8 for _ in range(8)]
-totalTrial = 0  # Count of moves
+import matplotlib.pyplot as plt
+# 方向数组：右下左上
+direction = [(0, 1), (1, 0), (0, -1), (-1, 0)]
 
-# Randomly initialize the state
-def initial():
-    for i in range(8):
-        for j in range(8):
-            queens[i][j] = 0
-    for i in range(8):
-        num = random.randint(0, 7)
-        queens[i][num] = 1
+# 当前状态
+current = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
 
-# Print the chessboard
-def print_board(board):
-    for row in board:
-        print(' '.join(map(str, row)))
+# 0的坐标
+row_0, col_0 = 0, 0
 
-# Find the number of collisions at a given position
-def find_collision(row, col):
-    count = 0
-    temp[row][col] = 1
-    for k in range(64):
-        if temp[k // 8][k % 8] == 1:
-            for i in range(8):
-                if i != k // 8 and temp[i][k % 8] == 1:
-                    count += 1
-            for i, j in zip(range(k // 8, 8), range(k % 8, 8)):  # Right-down
-                if i != k // 8 and temp[i][j] == 1:
-                    count += 1
-            for i, j in zip(range(k // 8, -1, -1), range(k % 8, -1, -1)):  # Left-up
-                if i != k // 8 and temp[i][j] == 1:
-                    count += 1
-            for i, j in zip(range(k // 8, 8), range(k % 8, -1, -1)):  # Left-down
-                if i != k // 8 and temp[i][j] == 1:
-                    count += 1
-            for i, j in zip(range(k // 8, -1, -1), range(k % 8, 8)):  # Right-up
-                if i != k // 8 and temp[i][j] == 1:
-                    count += 1
-    temp[row][col] = 0
-    return count // 2
+# 移动步数统计
+totalTrial = 0
 
-# Check if there are no collisions in the board
-def check(board):
-    for i in range(8):
-        flag = False
-        for j in range(8):
-            if board[i][j] == 1 and find_collision(i, j) == 0:
-                flag = True
-                break
-        if not flag:
-            return False
+# 计算曼哈顿距离
+def Manhattan():
+    sum = 0
+    for i in range(3):
+        for j in range(3):
+            if current[i][j] == 0:
+                continue
+            row = current[i][j] // 3
+            col = current[i][j] % 3
+            distance = abs(row - i) + abs(col - j)
+            sum += distance
+    return sum
+
+# 打印当前状态
+def print_state():
+    for i in range(3):
+        for j in range(3):
+            print(current[i][j], end=" ")
+        print()
+    print()
+
+# 初始化状态
+def initialize():
+    for i in range(3):
+        for j in range(3):
+            current[i][j] = i * 3 + j
+    global row_0, col_0
+    row_0, col_0 = 0, 0
+    last = -1
+
+    for m in range(20):
+        upset = False
+        while not upset:
+            dir = random.randint(0, 3)
+            if last != -1 and last != dir and abs(last - dir) == 2:
+                continue
+            x = row_0 + direction[dir][0]
+            y = col_0 + direction[dir][1]
+            if 0 <= x < 3 and 0 <= y < 3:
+                current[row_0][col_0], current[x][y] = current[x][y], current[row_0][col_0]
+                row_0, col_0 = x, y
+                last = dir
+                upset = True
+
+# 判断是否有解
+def check():
+    for i in range(3):
+        for j in range(3):
+            if current[i][j] != i * 3 + j:
+                return False
     return True
 
-# Hill Climbing algorithm
-def hill_climbing():
-    for trial in range(101):
-        # Copy the original board data to temp
-        for i in range(8):
-            for j in range(8):
-                temp[i][j] = queens[i][j]
-        h = [[0] * 8 for _ in range(8)]
-        min_h = 9999
-        min_x = 0
-        min_y = 0
-        cur_state = 0
-        for i in range(8):
-            for j in range(8):
-                for k in range(8):
-                    temp[i][k] = 0
-                h[i][j] = find_collision(i, j)
-                if queens[i][j] == 1:
-                    cur_state = h[i][j]
-                if h[i][j] < min_h:
-                    min_h = h[i][j]
-                    min_x = i
-                    min_y = j
-                for k in range(8):
-                    temp[i][k] = queens[i][k]
-
-        if cur_state > min_h:
-            for i in range(8):
-                queens[min_x][i] = 0
-            queens[min_x][min_y] = 1
-
-        if check(h):
+# 爬山法
+def hillClimbing():
+    global row_0, col_0
+    for trial in range(200):
+        curManha = Manhattan()
+        minMan = 99999
+        minX, minY = 0, 0
+        for i in range(4):
+            x = row_0 + direction[i][0]
+            y = col_0 + direction[i][1]
+            if 0 <= x < 3 and 0 <= y < 3:
+                current[row_0][col_0], current[x][y] = current[x][y], current[row_0][col_0]
+                nextManha = Manhattan()
+                if nextManha < minMan:
+                    minMan = nextManha
+                    minX, minY = x, y
+                current[x][y], current[row_0][col_0] = current[row_0][col_0], current[x][y]
+        if curManha > minMan:
+            current[row_0][col_0], current[minX][minY] = current[minX][minY], current[row_0][col_0]
+            row_0, col_0 = minX, minY
+        if check():
             global totalTrial
             totalTrial += trial
             return True
     return False
 
-# First-choice Hill Climbing algorithm
-def first_choice():
-    for trial in range(101):
-        for i in range(8):
-            for j in range(8):
-                temp[i][j] = queens[i][j]
-        h = [[0] * 8 for _ in range(8)]
-        cur_state = 0
-        for i in range(8):
-            for j in range(8):
-                for k in range(8):
-                    temp[i][k] = 0
-                h[i][j] = find_collision(i, j)
-                if queens[i][j] == 1:
-                    cur_state = h[i][j]
-                for k in range(8):
-                    temp[i][k] = queens[i][k]
-        better = False
+# 首选爬山法
+def firstChose():
+    global row_0, col_0
+    for trial in range(500):
+        next = False
         times = 0
-        next = 0
-        next_state = 0
-        while not better:
-            next = random.randint(0, 63)
-            next_state = h[next // 8][next % 8]
-            if next_state < cur_state:
-                better = True
-            times += 1
-            if times > 100:
+        while not next:
+            dir = random.randint(0, 3)
+            curManha = Manhattan()
+            x = row_0 + direction[dir][0]
+            y = col_0 + direction[dir][1]
+            if 0 <= x < 3 and 0 <= y < 3:
+                current[row_0][col_0], current[x][y] = current[x][y], current[row_0][col_0]
+                nextManha = Manhattan()
+                if nextManha < curManha:
+                    row_0, col_0 = x, y
+                    next = True
+                else:
+                    current[x][y], current[row_0][col_0] = current[row_0][col_0], current[x][y]
+                times += 1
+            if times > 20:
                 break
-        if better:
-            for i in range(8):
-                queens[next // 8][i] = 0
-            queens[next // 8][next % 8] = 1
-        if check(h):
+        if check():
             global totalTrial
             totalTrial += trial
             return True
     return False
 
-# Simulated Annealing algorithm
-def simulated_annealing():
+# 模拟退火算法
+def simulatedAnnealing():
+    global row_0, col_0
     temperature = 5
     trial = 0
     while temperature > 0.00001:
-        for i in range(8):
-            for j in range(8):
-                temp[i][j] = queens[i][j]
-        h = [[0] * 8 for _ in range(8)]
-        cur_state = 0
-        for i in range(8):
-            for j in range(8):
-                for k in range(8):
-                    temp[i][k] = 0
-                h[i][j] = find_collision(i, j)
-                if queens[i][j] == 1:
-                    cur_state = h[i][j]
-                for k in range(8):
-                    temp[i][k] = queens[i][k]
-        better = False
-        times = 0
-        next = random.randint(0, 63)
-        next_state = h[next // 8][next % 8]
-        E = next_state - cur_state
+        v = []
+        for i in range(4):
+            x = row_0 + direction[i][0]
+            y = col_0 + direction[i][1]
+            if 0 <= x < 3 and 0 <= y < 3:
+                v.append(i)
+        curManha = Manhattan()
+        dir = random.choice(v)
+        x = row_0 + direction[dir][0]
+        y = col_0 + direction[dir][1]
+        current[row_0][col_0], current[x][y] = current[x][y], current[row_0][col_0]
+        nextManha = Manhattan()
+        E = nextManha - curManha
         if E < 0:
-            better = True
-        elif math.exp((-1) * E / temperature) > (random.randint(0, 999) / 1000):
-            better = True
-        if better:
-            for i in range(8):
-                queens[next // 8][i] = 0
-            queens[next // 8][next % 8] = 1
+            row_0, col_0 = x, y
             trial += 1
-        if check(h):
+        elif math.exp(-E / temperature) > (random.random()):
+            row_0, col_0 = x, y
+            trial += 1
+        else:
+            current[x][y], current[row_0][col_0] = current[row_0][col_0], current[x][y]
+        temperature *= 0.999
+        if check():
             global totalTrial
             totalTrial += trial
             return True
-        temperature *= 0.99
     return False
 
-# Steepest Ascent Hill Climbing
-def steepest_ascent():
+# 最陡上升爬山法
+def steepestAscent():
     count = 0
     for i in range(1000):
-        initial()
-        if hill_climbing():
+        initialize()
+        if hillClimbing():
             count += 1
     return count
 
-# First-choice Hill Climbing
-def first_choice_search():
-    count = 0
-    for i in range(1000):
-        initial()
-        if first_choice():
-            count += 1
-    return count
-
-# Random Restart Hill Climbing
-def random_restart():
+# 随机重新开始爬山法
+def randomRestart():
     find = False
     while not find:
-        initial()
-        find = hill_climbing()
+        initialize()
+        find = hillClimbing()
     return find
 
-# Simulated Annealing Search
-def simulated_annealing_search():
+# 首选爬山法
+def firstChoseSearch():
     count = 0
     for i in range(1000):
-        initial()
-        if simulated_annealing():
+        initialize()
+        if firstChose():
             count += 1
     return count
 
-if __name__ == '__main__':
+# 模拟退火搜索
+def simulatedAnnealingSearch():
+    count = 0
+    for i in range(1000):
+        initialize()
+        if simulatedAnnealing():
+            count += 1
+    return count
+
+# 绘制性能曲线
+def plot_performance_curve(scores_ed, scores_eq):
+    
+    plt.rcParams['font.sans-serif']=['SimHei']
+    plt.rcParams['axes.unicode_minus']=False
+    plt.figure(figsize=(10, 5))
+    x = [0, 1, 2, 3]
+    # plt.subplot(1, 2, 1)
+    # plt.plot(sum(costs[:max_attempts]) / max_attempts, label='Hill Climbing')
+    # plt.plot(sum(costs[max_attempts:]) / max_attempts, label='Random Restart Hill Climbing')
+    # plt.plot(sum(costs_first_choice) / max_attempts, label='First Choice Hill Climbing')
+    # plt.plot(sum(costs_simulated_annealing) / max_attempts, label='Simulated Annealing')
+    plt.plot(scores_ed, label='八数码')
+    # plt.plot(scores_eq, label='八皇后')
+    plt.xticks(x, ['最陡上升爬山法', '首选爬山法', '随机重启爬山法', '模拟退火算法'])
+    plt.xlabel("方法")
+    plt.ylabel("成功率")
+    plt.title("四种方法查找成功率的比较")
+    
+    plt.plot(scores_eq, label='八皇后')
+    for i, prob in enumerate(scores_eq):
+        if prob > 0.001:
+            plt.text(x[i], prob, f'{prob:.3f}', ha='center', va='bottom')
+    for i, prob in enumerate(scores_ed):
+        if prob > 0.001:
+            plt.text(x[i], prob, f'{prob:.3f}', ha='center', va='bottom')
+    # plt.subplot(1, 2, 2)
+    # a = [sum(success_rates[:max_attempts]) / max_attempts]
+    # a.append(sum(success_rates[max_attempts:]) / max_attempts)
+    # a.append(sum(success_rates_first_choice) / max_attempts)
+    # a.append(sum(success_rates_simulated_annealing) / max_attempts)
+    # plt.plot(a, label='Simulated Annealing')
+    # plt.plot(sum(success_rates[:max_attempts]) / max_attempts, label='Hill Climbing')
+    # plt.plot(sum(success_rates[max_attempts:]) / max_attempts, label='Random Restart Hill Climbing')
+    # plt.plot(sum(success_rates_first_choice) / max_attempts, label='First Choice Hill Climbing')
+    # plt.plot(sum(success_rates_simulated_annealing) / max_attempts, label='Simulated Annealing')
+    plt.legend()
+    # plt.xlabel("Attempts")
+    # plt.ylabel("Success Rate")
+    # plt.title(f"Success Rate vs. Attempts (Max Attempts = {max_attempts})")
+    plt.savefig('a.png')
+
+if __name__ == "__main__":
     random.seed(time.time())
-
     totalTrial = 0
+    scores = []
     print("Steepest-Ascent searching...")
-    count = steepest_ascent()
-    print("Steepest-Ascent [success/total]:", count, "/1000")
-    # print("Average steps:", totalTrial / count)
-
+    count = steepestAscent()
+    print(f"Steepest-Ascent [success/total]: {count}/1000")
+    print(f"Average steps: {totalTrial / count}")
+    scores.append(count/1000)
     # totalTrial = 0
     # print("Random-Restart searching...")
-    # count2 = random_restart()
-    # print("Random-Restart:", count2)
-    # print("Average steps:", totalTrial / count2)
-
+    # count2 = randomRestart()
+    # print(f"Random-Restart: {count2}")
+    # print(f"Average steps: {totalTrial / count2}")
+    # scores.append(count2)
     totalTrial = 0
-    print("First-Choice searching...")
-    count3 = first_choice_search()
-    print("First-Choice [success/total]:", count3, "/1000")
-    # print("Average steps:", totalTrial / count3)
-
+    print("First-Chose searching...")
+    count3 = firstChoseSearch()
+    print(f"First-Chose [success/total]: {count3}/1000")
+    print(f"Average steps: {totalTrial / count3}")
+    scores.append(count3/1000)
     totalTrial = 0
-    print("Simulated-Annealing searching...")
-    count4 = simulated_annealing_search()
-    print("Simulated-Annealing [success/total]:", count4, "/1000")
-    # print("Average steps:", totalTrial / count4)
+    # print("Simulated-Annealing searching...")
+    # count4 = simulatedAnnealingSearch()
+    # print(f"Simulated-Annealing [success/total]: {count4}/1000")
+    # print(f"Average steps: {totalTrial / count4}")
+    # scores.append(count4/1000)
+    ##[8.560140371322632, 9.35342264175415, 1351.625123500824, 3887.748220205307]
+# [949, 966, 935, 901]
+    # scores = [0.037, 0.037, 0.486, 0.318]
+    # plot_performance_curve(scores, [0.949, 0.966, 0.935, 0.901])

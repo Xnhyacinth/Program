@@ -210,6 +210,7 @@ if __name__ == '__main__':
                 board.append(int(col))        
             # FAILED = False
             board = solution_steepestHillClimbing(board) # 换成对应的方法
+            print(board)
             if FAILED:
                 result = "Failed!"
             else:
@@ -231,33 +232,33 @@ if __name__ == '__main__':
                     result == str(board[col]) + " "
         ts.append(time.time() - x0)
             # FAILED = False
-    with open("eightQueensTest.txt", "r") as ins:
-        x0 = time.time()
-        for line in ins:
-            FAILED = False
-            board = []
-            for col in line.split():
-                board.append(int(col))        
-            board = solution_RandomHillClimbing(board) # 换成对应的方法
-            if FAILED:
-                result = "Failed!"
-            else:
-                successCase[2] += 1
-            # FAILED = False
-        ts.append(time.time() - x0)
-    with open("eightQueensTest.txt", "r") as ins:
-        x0 = time.time()
-        for line in ins:
-            FAILED = False
-            board = []
-            for col in line.split():
-                board.append(int(col))        
-            board = solution_SimulatedAnnealing(board) # 换成对应的方法
-            if FAILED:
-                result = "Failed!"
-            else:
-                successCase[3] += 1
-        ts.append(time.time() - x0)
+    # with open("eightQueensTest.txt", "r") as ins:
+    #     x0 = time.time()
+    #     for line in ins:
+    #         FAILED = False
+    #         board = []
+    #         for col in line.split():
+    #             board.append(int(col))        
+    #         board = solution_RandomHillClimbing(board) # 换成对应的方法
+    #         if FAILED:
+    #             result = "Failed!"
+    #         else:
+    #             successCase[2] += 1
+    #         # FAILED = False
+    #     ts.append(time.time() - x0)
+    # with open("eightQueensTest.txt", "r") as ins:
+    #     x0 = time.time()
+    #     for line in ins:
+    #         FAILED = False
+    #         board = []
+    #         for col in line.split():
+    #             board.append(int(col))        
+    #         board = solution_SimulatedAnnealing(board) # 换成对应的方法
+    #         if FAILED:
+    #             result = "Failed!"
+    #         else:
+    #             successCase[3] += 1
+    #     ts.append(time.time() - x0)
             # result += "\n"
     print(ts)
     print(successCase)
