@@ -14,6 +14,7 @@ Some projects and works during undergraduate and postgraduate school (NCEPU & UC
 ├── CV # CV program
 ├── DB_program # DB program -- Laboratory equipment management system
 ├── DSA_program # DSA program -- File Explorer
+├── MIR # Modern Information Retrieval
 ├── ML # Machine Learning Algorithm Implementation
 ├── NLP # Natural Language Processing (NLP)
 │   ├──Language_Model # Comparison of perplexity in language models utilizing different networks
