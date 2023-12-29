@@ -4,7 +4,8 @@ from tqdm import tqdm
 from transformers import AutoTokenizer, AutoModel, AdamW
 import os
 from utils import *
-os.environ['CUDA_VISIBLE_DEVICES'] = '5'
+import random
+os.environ['CUDA_VISIBLE_DEVICES'] = '9'
 
 
 def load_data(corpus_path, query_path, label_path):
@@ -43,8 +44,19 @@ class PassageRerankDataset(Dataset):
         self.queries = queries
         self.labels = labels
         if is_train:
-            self.data = [(query, passage, self.labels.get((query, passage), 0))
-                         for query in queries.keys() for passage in passages.keys()]
+            print("load dataset")
+            data = [(query, passage, label)
+                         for (query, passage), label in self.labels.items()]
+            new_data = []
+            print(len(data))
+            for d in data:
+                random_selection = random.sample(list(passages.keys()), 3)
+                while d[1] in random_selection:
+                    random_selection = random.sample(list(passages.keys()), 3)
+                new_data.extend([(d[0], p, 0) for p in random_selection])
+            data.extend(new_data)
+            self.data = data
+            print(len(self.data))
         else:
             self.data = [(query, passage, label)
                          for (query, passage), label in self.labels.items()]
@@ -133,12 +145,12 @@ if __name__ == '__main__':
         'sample/collection.sampled.tsv', 'sample/train_sample_queries.tsv', 'sample/train_sample_passv2_qrels.tsv')
     dataset = PassageRerankDataset(
         passages, queries, labels, tokenizer, max_len)
-    train_loader = DataLoader(dataset, batch_size=32, shuffle=True)
+    train_loader = DataLoader(dataset, batch_size=64, shuffle=True)
     print('finish load train dataset')
     val_queries, val_labels = load_eval_dataset(
         'sample/val_2021_53_queries.tsv', 'sample/val_2021_passage_top100.txt')
     val_dataset = PassageRerankDataset(passages, val_queries, val_labels, tokenizer, max_len, False)
-    val_loader = DataLoader(val_dataset, batch_size=32, shuffle=False)
+    val_loader = DataLoader(val_dataset, batch_size=16, shuffle=False)
     print('finish load eval dataset')
     metric = Metric()
 
@@ -153,7 +165,7 @@ if __name__ == '__main__':
     for epoch in range(num_epochs):
         model.train()
         total_loss = 0
-        for batch in train_loader:
+        for batch in tqdm(train_loader):
             input_ids = batch['input_ids'].to(device)
             attention_mask = batch['attention_mask'].to(device)
             token_type_ids = batch['token_type_ids'].to(device)
