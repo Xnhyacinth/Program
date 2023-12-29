@@ -116,7 +116,7 @@ class PassageRerankModel(torch.nn.Module):
         return score #[B]
 
 
-def eval(model, eval_loader, metric, device):
+def eval(model, eval_loader, metric, device, is_test=False):
     model.eval()
     all_preds = []
     pids = {}
@@ -132,7 +132,7 @@ def eval(model, eval_loader, metric, device):
                 for i in range(len(input['qid']))]
         all_preds.extend(pred)
 
-    score = metric.get_ndcg(all_preds, pids)
+    score = metric.get_ndcg(all_preds, pids, is_test)
     return score
 
 SAVE_PATH =  os.path.join('model', 'bert-base')
@@ -151,6 +151,10 @@ if __name__ == '__main__':
         'sample/val_2021_53_queries.tsv', 'sample/val_2021_passage_top100.txt')
     val_dataset = PassageRerankDataset(passages, val_queries, val_labels, tokenizer, max_len, False)
     val_loader = DataLoader(val_dataset, batch_size=16, shuffle=False)
+    test_queries, test_labels = load_eval_dataset(
+        'sample/test_2022_76_queries.tsv', 'sample/test_2022_passage_top100.txt')
+    test_dataset = PassageRerankDataset(passages, test_queries, test_labels, tokenizer, max_len, False)
+    test_loader = DataLoader(val_dataset, batch_size=16, shuffle=False)
     print('finish load eval dataset')
     metric = Metric()
 
@@ -184,7 +188,12 @@ if __name__ == '__main__':
         
         score = eval(model, val_loader, metric, device)
         if score > best_score:
-            print(f'evaluation result:{score}')
+            print(f'val result:{score}')
             torch.save(model.state_dict(), os.path.join(SAVE_PATH, 'best.pt'))
             best_score = score
             print(f'state dict saved to {SAVE_PATH}')
+        
+    # test
+    model.load_state_dict(torch.load(os.path.join(SAVE_PATH, 'best.pt')))
+    score = eval(model, val_loader, metric, device, True)
+    print(f'test result:{score}')
