@@ -154,7 +154,7 @@ if __name__ == '__main__':
     test_queries, test_labels = load_eval_dataset(
         'sample/test_2022_76_queries.tsv', 'sample/test_2022_passage_top100.txt')
     test_dataset = PassageRerankDataset(passages, test_queries, test_labels, tokenizer, max_len, False)
-    test_loader = DataLoader(val_dataset, batch_size=16, shuffle=False)
+    test_loader = DataLoader(test_dataset, batch_size=16, shuffle=False)
     print('finish load eval dataset')
     metric = Metric()
 
@@ -195,5 +195,5 @@ if __name__ == '__main__':
         
     # test
     model.load_state_dict(torch.load(os.path.join(SAVE_PATH, 'best.pt')))
-    score = eval(model, val_loader, metric, device, True)
+    score = eval(model, test_loader, metric, device, True)
     print(f'test result:{score}')
