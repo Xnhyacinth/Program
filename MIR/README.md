@@ -12,3 +12,6 @@ TREC 2022 Deep Learning Passage Ranking
 
 ### trec_eval
 calculate the evaluation metrics: NDCG@10
+
+### Run
+`python -u model.py`
