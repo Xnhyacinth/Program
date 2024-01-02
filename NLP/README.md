@@ -11,4 +11,5 @@ Some assignments in a graduate NLP course at UCAS
 ```bash
 ├──Language_Model # Comparison of perplexity in language models utilizing different networks
 ├──Spider_Entropy # spider + information entropy + Ziff's law
+├──Word_Segmentation # Word Segmentation & Subword compression
 ```
