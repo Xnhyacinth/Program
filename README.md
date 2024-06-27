@@ -20,4 +20,7 @@ Some projects and works during undergraduate and postgraduate school (NCEPU & UC
 │   ├──Language_Model # Comparison of perplexity in language models utilizing different networks
 │   ├──spider_entropy # spider + information entropy + Ziff's law
 ├── UESBD-FL # User electricity stealing behavior detection based on federated learning
+├── VideoProcessing_Analysis
+│   ├──Image_subject_recognition # Image subject recognition and classification in electronic mental sandtable dataset
+│   ├──Image_description # Multimodal large model (gpt4o, glm4v) was used to generate the image description of the sand table
 ```
