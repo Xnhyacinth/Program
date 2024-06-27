@@ -1,0 +1,4 @@
+checkpoints/outputs/*
+checkpoints/state_dict/*
+checkpoints/tensorboard/*
+resource/homework_sand_label_datasets/*

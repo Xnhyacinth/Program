@@ -1,0 +1,26 @@
+﻿{"department":"10000000000","departmentName":"智恩陪心（北京）科技有限公司","phone":"13225252125","accountState":"1","LoveObjMeaning":"","LoveAssetName":"","LoveGOId":"","SymbolisedAssetName":"","SymbolisedGOId":"","OwnStory":"","Score":"100","RangeInfo":"","UserName":"10000","UserId":"22912213","ConsultantName":"","Remarks":"","TimeStamp":"2023-11-17 15:17:33","TestDuration":303.8500061035156,"SceneName":"RealSandTest","SceneTheme":"真实沙盘","ItemType":[8,3,1,1,1,1,1],"ItemUseTime":[148.4390106201172,137.28053283691407,119.02371215820313,109.22079467773438,105.0992431640625,77.76693725585938,62.778228759765628],"Active":[true,true,true,true,true,true,true],"TypeTimeDuration":[473.888916015625,0.0,137.28053283691407,0.0,0.0,0.0,0.0,148.4390106201172],"TypeCreateCount":[5,0,1,0,0,0,0,1],"HideCreateCount":[4,0,0,0,0,2,0,1,0,0,0,0],"UserNum":"22912213","UserSex":0,"UserTime":"1970-09-27","lastTime":"","UserType":"1","WorldName":"","DadRepresentative":[],"MomRepresentative":[],"OtherRepresentative":[],"BorGRepresentative":[],"GoodFriendRepresentative":[],"TeacherRepresentative":[],"SelfRepresentative":[],"SceneDescription":"想象场景","StartTime":"2023-11-17 15:12:28","Report_id":"9b51bdbe-b9f0-c9cd-3a04-57ca1a8b08aa","LickPhotoTime":"","LickPhotoCount":0,"gradleName":"","gradleId":0,"className":"","orgId":0,"isInMembership":0,"phaseId":0,"phaseName":"","AdmissionDate":"","SchoolName":"","RevokeItem":[],"FTPUrl":"ftp://36.110.172.217/AIMW-G/gameResources/","BeforeObjects":["397","13","488"],"DeleteObjects":["","",""],"Presentationinfo":""}
+{"TimeFrame":155.4064178466797,"State":4,"assetId":397,"itemname":"Boat1","GOID":1,"postion":{"x":18.832115173339845,"y":-1.647009253501892,"z":5.271976470947266},"Rot":{"x":0.0,"y":0.0,"z":0.0},"itemtypeid":8}
+{"TimeFrame":156.47019958496095,"State":6,"assetId":397,"itemname":"Boat1","GOID":1,"Scale":2.2200000286102297,"OriginalScale":0.0}
+{"TimeFrame":157.93524169921876,"State":6,"assetId":397,"itemname":"Boat1","GOID":1,"Scale":2.880000114440918,"OriginalScale":0.0}
+{"TimeFrame":166.5648956298828,"State":4,"assetId":13,"itemname":"FemaleYoungsters","GOID":2,"postion":{"x":17.01795768737793,"y":1.960532784461975,"z":6.960495948791504},"Rot":{"x":0.0,"y":0.0,"z":0.0},"itemtypeid":3}
+{"TimeFrame":184.82171630859376,"State":4,"assetId":488,"itemname":"Shark1","GOID":3,"postion":{"x":10.364383697509766,"y":-1.7000000476837159,"z":13.74936294555664},"Rot":{"x":0.0,"y":0.0,"z":0.0},"itemtypeid":1}
+{"TimeFrame":185.5851593017578,"State":6,"assetId":488,"itemname":"Shark1","GOID":3,"Scale":4.420000076293945,"OriginalScale":0.0}
+{"TimeFrame":186.31626892089845,"State":6,"assetId":488,"itemname":"Shark1","GOID":3,"Scale":6.179998397827148,"OriginalScale":0.0}
+{"TimeFrame":190.66989135742188,"State":7,"assetId":488,"itemname":"Shark1","GOID":3,"value":75.0,"direction":"right"}
+{"TimeFrame":194.6246337890625,"State":4,"assetId":490,"itemname":"Fish2","GOID":4,"postion":{"x":8.922855377197266,"y":-1.7000000476837159,"z":13.26109504699707},"Rot":{"x":0.0,"y":0.0,"z":0.0},"itemtypeid":1}
+{"TimeFrame":198.0476531982422,"State":7,"assetId":490,"itemname":"Fish2","GOID":4,"value":70.0,"direction":"right"}
+{"TimeFrame":198.74618530273438,"State":4,"assetId":490,"itemname":"Fish2","GOID":5,"postion":{"x":6.72484016418457,"y":-1.7000000476837159,"z":15.506474494934082},"Rot":{"x":0.0,"y":70.0,"z":0.0},"itemtypeid":1}
+{"TimeFrame":226.0784912109375,"State":4,"assetId":72,"itemname":"Tiger","GOID":6,"postion":{"x":29.482261657714845,"y":-0.800650954246521,"z":-3.219970703125},"Rot":{"x":0.0,"y":0.0,"z":0.0},"itemtypeid":1}
+{"TimeFrame":231.03030395507813,"State":7,"assetId":72,"itemname":"Tiger","GOID":6,"value":-53.0,"direction":"left"}
+{"TimeFrame":241.06719970703126,"State":4,"assetId":75,"itemname":"Horse","GOID":7,"postion":{"x":6.020404815673828,"y":-0.800650954246521,"z":-5.096118927001953},"Rot":{"x":0.0,"y":0.0,"z":0.0},"itemtypeid":1}
+{"TimeFrame":242.0305633544922,"State":6,"assetId":75,"itemname":"Horse","GOID":7,"Scale":10.159998893737793,"OriginalScale":0.0}
+{"TimeFrame":243.72547912597657,"State":6,"assetId":75,"itemname":"Horse","GOID":7,"Scale":7.520000457763672,"OriginalScale":0.0}
+{"TimeFrame":245.71966552734376,"State":6,"assetId":75,"itemname":"Horse","GOID":7,"Scale":9.279999732971192,"OriginalScale":0.0}
+{"TimeFrame":246.05181884765626,"State":6,"assetId":75,"itemname":"Horse","GOID":7,"Scale":12.359996795654297,"OriginalScale":0.0}
+{"TimeFrame":254.26051330566407,"State":7,"assetId":75,"itemname":"Horse","GOID":7,"value":-92.0,"direction":"left"}
+{"TimeFrame":254.9251251220703,"State":6,"assetId":75,"itemname":"Horse","GOID":7,"Scale":11.479997634887696,"OriginalScale":0.0}
+{"TimeFrame":255.49008178710938,"State":6,"assetId":75,"itemname":"Horse","GOID":7,"Scale":11.039998054504395,"OriginalScale":0.0}
+{"TimeFrame":256.0218505859375,"State":6,"assetId":75,"itemname":"Horse","GOID":7,"Scale":10.599998474121094,"OriginalScale":0.0}
+{"TimeFrame":256.4871520996094,"State":6,"assetId":75,"itemname":"Horse","GOID":7,"Scale":9.719999313354493,"OriginalScale":0.0}
+{"TimeFrame":258.58087158203127,"State":6,"assetId":75,"itemname":"Horse","GOID":7,"Scale":4.880000114440918,"OriginalScale":0.0}
+{"TimeFrame":303.8454284667969,"State":1000}
